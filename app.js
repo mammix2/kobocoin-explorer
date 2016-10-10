@@ -9,15 +9,16 @@ var express = require('express')
   , routes = require('./routes/index')
   , lib = require('./lib/explorer')
   , db = require('./lib/database')
-  , locale = require('./lib/locale');
+  , locale = require('./lib/locale')
+  , request = require('request');
 
 var app = express();
 
 // bitcoinapi
 bitcoinapi.setWalletDetails(settings.wallet);
 if (settings.heavy != true) {
-  bitcoinapi.setAccess('only', ['getinfo', 'getnetworkhashps', 'getmininginfo','getdifficulty', 'getconnectioncount', 
-    'getblockcount', 'getblockhash', 'getblock', 'getrawtransaction']);
+  bitcoinapi.setAccess('only', ['getinfo', 'getnetworkhashps', 'getmininginfo','getdifficulty', 'getconnectioncount',
+    'getblockcount', 'getblockhash', 'getblock', 'getrawtransaction', 'getpeerinfo', 'gettxoutsetinfo']);
 } else {
   // enable additional heavy api calls
   /*
@@ -31,10 +32,10 @@ if (settings.heavy != true) {
     getsupply - Returns the current money supply.
     getmaxmoney - Returns the maximum possible money supply.
   */
-  bitcoinapi.setAccess('only', ['getinfo', 'getstakinginfo', 'getnetworkhashps', 'getdifficulty', 'getconnectioncount', 
+  bitcoinapi.setAccess('only', ['getinfo', 'getstakinginfo', 'getnetworkhashps', 'getdifficulty', 'getconnectioncount',
     'getblockcount', 'getblockhash', 'getblock', 'getrawtransaction','getmaxmoney', 'getvote',
     'getmaxvote', 'getphase', 'getreward', 'getnextrewardestimate', 'getnextrewardwhenstr',
-    'getnextrewardwhensec', 'getsupply']);
+    'getnextrewardwhensec', 'getsupply', 'gettxoutsetinfo']);
 }
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -93,9 +94,15 @@ app.use('/ext/getdistribution', function(req,res){
   });
 });
 
-app.use('/ext/getlasttxs/:count/:min', function(req,res){
-  db.get_last_txs(req.param('count'), (req.param('min') * 100000000), function(txs){
+app.use('/ext/getlasttxs/:min', function(req,res){
+  db.get_last_txs(settings.index.last_txs, (req.params.min * 100000000), function(txs){
     res.send({data: txs});
+  });
+});
+
+app.use('/ext/connections', function(req,res){
+  db.get_peers(function(peers){
+    res.send({data: peers});
   });
 });
 
