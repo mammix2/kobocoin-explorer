@@ -64,10 +64,14 @@
     "markets": true,
     "richlist": true,
     "twitter": true,
-    "search": true
+    "facebook": false,
+    "googleplus": false,
+    "search": true,
+    "movement": true,
+    "network": true
   },
 
-  // index page (valid options for difficulty are POW or POS)
+  // index page (valid options for difficulty are POW, POS or Hybrid)
   "index": {
     "show_hashrate": true,
     "difficulty": "POW",
@@ -83,13 +87,14 @@
   },
   
   // market settings
-  //supported markets: bittrex, poloniex, yobit, empoex, cryptsy, bleutrade
+  //supported markets: bittrex, poloniex, yobit, empoex, bleutrade, cryptopia, ccex
   //default market is loaded by default and determines last price in header
   "markets": {
     "coin": "JBS",
     "exchange": "BTC",
-    "enabled": ["bittrex", "cryptsy"],
-    "cryptsy_id": "290",
+    "enabled": ["bittrex"],
+    "cryptopia_id": "1658",
+    "ccex_key" : "Get-Your-Own-Key",
     "default": "bittrex"
   },
 
@@ -99,9 +104,20 @@
     "received": true,
     "balance": true
   },
+  // movement page settings
+  // min amount: show transactions greater than this value
+  // low flag: greater than this value flagged yellow
+  // high flag: greater than this value flagged red
+  "movement": {
+    "min_amount": 100,
+    "low_flag": 1000,
+    "high_flag": 5000
+  },
 
-  // twitter
+  // twitter, facebook, googleplus
   "twitter": "iquidus",
+  "facebook": "yourfacebookpage",
+  "googleplus": "yourgooglepluspage",
 
   //genesis
   "genesis_tx": "65f705d2f385dc85763a317b3ec000063003d6b039546af5d8195a5ec27ae410",
@@ -121,6 +137,7 @@
   // GETINFO : retreive from getinfo api call (PoS)
   // HEAVY: retreive from heavys getsupply api call
   // BALANCES : total of all address balances
+  // TXOUTSET : retreive from gettxoutsetinfo api call
   "supply": "BALANCES",
 
   // how to acquire network hashrate
