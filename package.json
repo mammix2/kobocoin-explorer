@@ -8,6 +8,7 @@
     "test": "node ./node_modules/jasmine/bin/jasmine.js"
   },
   "dependencies": {
+    "nan": "2.3.*",
     "express": "~4.2.0",
     "static-favicon": "~1.0.0",
     "morgan": "~1.0.0",
